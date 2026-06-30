@@ -46,7 +46,7 @@ function App() {
 
             {result && (
                 <div>
-                    <p>Total distance = {result.distance} meters</p>
+                    <p>Total distances = {result.distance} meters</p>
                     <p>Total duration = {result.duration} seconds</p>
                     {
                         result.resultRouteWayPoints.map((coordinates, index) => (
