@@ -1,4 +1,4 @@
-import {MapContainer, Marker, Polyline, Popup, TileLayer} from 'react-leaflet'
+import {MapContainer, Marker, Polyline, Popup, TileLayer, ZoomControl} from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 
 function Map(props) {
@@ -10,9 +10,11 @@ function Map(props) {
             <MapContainer
                 center={[52.517037, 13.388860]}
                 zoom={13}
-                scrollWheelZoom={false}
+                scrollWheelZoom={true}
+                zoomControl= {false}
                 style={{height: '100vh', width: '100%'}}
             >
+                <ZoomControl position={"bottomright"}/>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

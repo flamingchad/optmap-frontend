@@ -1,6 +1,10 @@
 import { useState } from 'react'
 import './App.css'
 import Map from "./components/Map.jsx";
+import Button from '@mui/material/Button';
+import {Box, Divider, TextField, Typography} from "@mui/material";
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import StraightenIcon from '@mui/icons-material/Straighten';
 
 function App() {
     const [waypoints, setWaypoints] = useState([])
@@ -28,34 +32,58 @@ function App() {
 
     return (
         <>
-            {
-                waypoints.map((waypoint, index) => (
-                    <div key={index}>
-                        <input
-                            type="text"
-                            placeholder="latitude"
-                            onChange={(e) => handleInputChange(index, "latitude", e.target.value )}
-                        />
-                        <input type="text" placeholder="longitude" onChange={
-                            (e) => handleInputChange(index, "longitude", e.target.value )}/>
-                    </div>
-                ))
-            }
-            <button type={"button"} onClick={addStops}>add stop</button>
-            <button type={"submit"} onClick={handleSubmit}>submit</button>
+           <div className={"app-container"}>
+               <div className={"side-panel"}>
+                   <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>
+                       Route Planner
+                   </Typography>
+                   {
+                       waypoints.map((waypoint, index) => (
+                           <Box key={index} sx={{ mb: 1.5 }}>
+                               <Typography variant="body2" sx={{ mb: 0.5 }}>
+                                   Stop {index + 1}
+                               </Typography>
+                               <Box sx={{display: 'flex', gap: 1, mb: 1.5}}
+                                    component={"form"} key={index} autoComplete={"off"}>
+                                   <TextField
+                                       variant={"outlined"}
+                                       label={"Latitude"}
+                                       type={"text"}
+                                       size={"small"}
+                                       onChange={(e) => handleInputChange(index, "latitude", e.target.value )}
+                                   />
+                                   <TextField
+                                       variant={"outlined"}
+                                       label={"Longitude"}
+                                       type={"text"}
+                                       size={"small"}
+                                       onChange={(e) => handleInputChange(index, "longitude", e.target.value )}/>
+                               </Box>
+                           </Box>
+                       ))
+                   }
+                   <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
+                       <Button variant={"outlined"} onClick={addStops} fullWidth>add stop</Button>
+                       <Button variant={"contained"} onClick={handleSubmit} fullWidth>submit</Button>
+                   </Box>
 
-            {result && (
-                <div>
-                    <p>Total distances = {result.distance} meters</p>
-                    <p>Total duration = {result.duration} seconds</p>
-                    {
-                        result.resultRouteWayPoints.map((coordinates, index) => (
-                            <div key={index} className="result">
-                                latitude: {coordinates.latitude}, longitude: {coordinates.longitude}
-                            </div>
-                        ))}
-                </div>)}
-            <Map result={result} />
+
+                   {result && (
+                       <div>
+                           <Divider sx={{ my: 2 }} />
+                           <Typography variant={"h5"}>Optimised Route:</Typography>
+                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mt: 1 }}>
+                               <StraightenIcon sx={{ fontSize: 18 }} />
+                               <Typography>{(result.distance / 1000).toFixed(1)} km</Typography>
+                           </Box>
+                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mt: 0.5 }}>
+                               <AccessTimeIcon sx={{ fontSize: 18 }} />
+                               <Typography>{(result.duration / 60).toFixed(1)} min</Typography>
+                           </Box>
+                       </div>)}
+               </div>
+               <Map result={result} />
+           </div>
         </>
     )
 }
